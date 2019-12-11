@@ -1,0 +1,27 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+input[type="text"] {
+  border-radius: 4px;
+  height: 32px;
+  background: #F0F3F7;
+  font-size: 16px;
+  color: #252525;
+  border: none;
+  outline: none;
+  padding: 5px 8px 5px 8px;
+  width: 100%;
+}
+
+::placeholder {
+  color: #8596A6;
+}
