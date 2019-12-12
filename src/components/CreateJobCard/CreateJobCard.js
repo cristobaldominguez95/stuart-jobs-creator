@@ -3,7 +3,7 @@ import styles from './CreateJobCard.module.css';
 import Button from '../Button/Button';
 import { connect } from 'react-redux';
 import { LOCATION_STATUS } from '../../utils';
-import { setPickUpAddressInput, setDropOffAddressInput, setPickUpStatus, setDropOffStatus } from '../../redux/action-creators';
+import { setPickUpAddressInput, setDropOffAddressInput, setPickUpStatus, setDropOffStatus, setCreatingJob, setPickUpCoordinates, setDropOffCoordinates, removePickUpCoordinates, removeDropOffCoordinates } from '../../redux/action-creators';
 import { geocode } from '../../api/stuart';
 
 class CreateJobCard extends React.Component {
@@ -36,24 +36,22 @@ class CreateJobCard extends React.Component {
     e.persist();
     clearTimeout(this.timeout);
 
-    // if the input is empty we set neutral state, otherwise send request
-    if (e.target.value === '') {
-      this.props.setPickUpStatus(LOCATION_STATUS.NEUTRAL);
-      this.props.setDropOffStatus(LOCATION_STATUS.NEUTRAL);
-    } else {
-      try {
-        await geocode(e.target.value);
-        if (e.target.name === 'pickUpAddress') {
-          this.props.setPickUpStatus(LOCATION_STATUS.SUCCESS);
-        } else if (e.target.name === 'dropOffAddress') {
-          this.props.setDropOffStatus(LOCATION_STATUS.SUCCESS);
-        }
-      } catch (error) {
-        if (e.target.name === 'pickUpAddress') {
-          this.props.setPickUpStatus(LOCATION_STATUS.ERROR);
-        } else if (e.target.name === 'dropOffAddress') {
-          this.props.setDropOffStatus(LOCATION_STATUS.ERROR);
-        }
+    try {
+      const response = await geocode(e.target.value);
+      if (e.target.name === 'pickUpAddress') {
+        this.props.setPickUpStatus(LOCATION_STATUS.SUCCESS);
+        this.props.setPickUpCoordinates(response.data.latitude, response.data.longitude);
+      } else if (e.target.name === 'dropOffAddress') {
+        this.props.setDropOffStatus(LOCATION_STATUS.SUCCESS);
+        this.props.setDropOffCoordinates(response.data.latitude, response.data.longitude);
+      }
+    } catch (error) {
+      if (e.target.name === 'pickUpAddress') {
+        this.props.setPickUpStatus(LOCATION_STATUS.ERROR);
+        this.props.removePickUpCoordinates();
+      } else if (e.target.name === 'dropOffAddress') {
+        this.props.setDropOffStatus(LOCATION_STATUS.ERROR);
+        this.props.removeDropOffCoordinates();
       }
     }
 
@@ -124,5 +122,10 @@ export default connect(mapStateToProps, {
   setPickUpAddressInput,
   setDropOffAddressInput,
   setPickUpStatus,
-  setDropOffStatus
+  setDropOffStatus,
+  setCreatingJob,
+  setPickUpCoordinates,
+  setDropOffCoordinates,
+  removePickUpCoordinates,
+  removeDropOffCoordinates
 })(CreateJobCard);

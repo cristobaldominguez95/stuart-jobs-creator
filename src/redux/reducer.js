@@ -8,6 +8,8 @@ const initialState = {
   dropOffStatus: LOCATION_STATUS.NEUTRAL,
   isCreatingJob: false,
   displayToast: false,
+  pickUpCoordinates: null,
+  dropOffCoordinates: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -44,6 +46,32 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.RESET_INPUTS:
       return initialState;
+    case actionTypes.SET_PICK_UP_COORDINATES:
+      return {
+        ...state,
+        pickUpCoordinates: {
+          latitude: action.payload.latitude,
+          longitude: action.payload.longitude
+        }
+      };
+      case actionTypes.SET_DROP_OFF_COORDINATES:
+        return {
+          ...state,
+          dropOffCoordinates: {
+            latitude: action.payload.latitude,
+            longitude: action.payload.longitude
+          }
+        };
+      case actionTypes.REMOVE_PICK_UP_COORDINATES:
+        return {
+          ...state,
+          pickUpCoordinates: null
+        };
+      case actionTypes.REMOVE_DROP_OFF_COORDINATES:
+        return {
+          ...state,
+          dropOffCoordinates: null
+        }
     default:
       return state;
   }

@@ -59,3 +59,35 @@ export function resetInputs() {
     type: actionTypes.RESET_INPUTS
   };
 }
+
+export function setPickUpCoordinates(latitude, longitude) {
+  return {
+    type: actionTypes.SET_PICK_UP_COORDINATES,
+    payload: {
+      latitude,
+      longitude
+    }
+  };
+}
+
+export function setDropOffCoordinates(latitude, longitude) {
+  return {
+    type: actionTypes.SET_DROP_OFF_COORDINATES,
+    payload: {
+      latitude,
+      longitude
+    }
+  };
+}
+
+export function removePickUpCoordinates() {
+  return {
+    type: actionTypes.REMOVE_PICK_UP_COORDINATES
+  };
+}
+
+export function removeDropOffCoordinates() {
+  return {
+    type: actionTypes.REMOVE_DROP_OFF_COORDINATES
+  };
+}
