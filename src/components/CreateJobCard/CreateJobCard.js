@@ -65,9 +65,11 @@ class CreateJobCard extends React.Component {
     }
 
     try {
+      this.props.setCreatingJob(true);
       await createJob(this.props.pickUpAddressInput, this.props.dropOffAddressInput);
       this.props.setToastVisibility(true, 'Job has been created successfully!');
       this.props.resetInputs();
+      this.props.setCreatingJob(false);
     } catch (error) {
       // handle error with toast message
       this.props.setToastVisibility(true, 'Oops! There was an error creating your job. Please try again.');
