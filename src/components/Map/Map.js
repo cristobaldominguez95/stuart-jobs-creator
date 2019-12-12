@@ -11,40 +11,38 @@ class Map extends React.Component {
   componentDidUpdate(prevProps) {
     // if pick up coordinates changed...
     if (prevProps.pickUpCoordinates !== this.props.pickUpCoordinates) {
-      // remove or add marker ONLY if it doesn't exist yet
-      if (this.props.pickUpCoordinates) {
-        if (!this.pickUpMarker) {
-          this.pickUpMarker = new window.google.maps.Marker({
-            position: {
-              lat: this.props.pickUpCoordinates.latitude,
-              lng: this.props.pickUpCoordinates.longitude
-            },
-            map: this.map,
-            icon: 'svg/pickUpMarker.svg'
-          });
-        }
-      } else {
+      // remove marker and add it again if coordinates exist
+      if (this.pickUpMarker) {
         this.pickUpMarker.setMap(null);
         this.pickUpMarker = undefined;
+      }
+      if (this.props.pickUpCoordinates) {
+        this.pickUpMarker = new window.google.maps.Marker({
+          position: {
+            lat: this.props.pickUpCoordinates.latitude,
+            lng: this.props.pickUpCoordinates.longitude
+          },
+          map: this.map,
+          icon: 'svg/pickUpMarker.svg'
+        });
       }
     }
 
     // same process for drop off coordinates
     if (prevProps.dropOffCoordinates !== this.props.dropOffCoordinates) {
-      if (this.props.dropOffCoordinates) {
-        if (!this.dropOffMarker) {
-          this.dropOffMarker = new window.google.maps.Marker({
-            position: {
-              lat: this.props.dropOffCoordinates.latitude,
-              lng: this.props.dropOffCoordinates.longitude
-            },
-            map: this.map,
-            icon: 'svg/dropOffMarker.svg'
-          });
-        }
-      } else {
+      if (this.dropOffMarker) {
         this.dropOffMarker.setMap(null);
         this.dropOffMarker = undefined;
+      }
+      if (this.props.dropOffCoordinates) {
+        this.dropOffMarker = new window.google.maps.Marker({
+          position: {
+            lat: this.props.dropOffCoordinates.latitude,
+            lng: this.props.dropOffCoordinates.longitude
+          },
+          map: this.map,
+          icon: 'svg/dropOffMarker.svg'
+        });
       }
     }
   }
