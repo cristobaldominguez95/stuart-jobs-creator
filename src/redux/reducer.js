@@ -9,7 +9,8 @@ const initialState = {
   isCreatingJob: false,
   displayToast: false,
   pickUpCoordinates: null,
-  dropOffCoordinates: null
+  dropOffCoordinates: null,
+  toastMessage: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,10 +43,16 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_TOAST_VISIBILITY:
       return {
         ...state,
-        displayToast: action.payload.displayToast
+        displayToast: action.payload.displayToast,
+        toastMessage: action.payload.message
       };
     case actionTypes.RESET_INPUTS:
-      return initialState;
+      // only keep toast visibility and message
+      return {
+        ...initialState,
+        displayToast: state.displayToast,
+        toastMessage: state.toastMessage
+      }
     case actionTypes.SET_PICK_UP_COORDINATES:
       return {
         ...state,

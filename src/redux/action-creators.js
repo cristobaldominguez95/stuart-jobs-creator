@@ -18,11 +18,12 @@ export function setDropOffAddressInput(input) {
   };
 }
 
-export function setToastVisibility(displayToast) {
+export function setToastVisibility(displayToast, message = '') {
   return {
     type: actionTypes.SET_TOAST_VISIBILITY,
     payload: {
-      displayToast
+      displayToast,
+      message
     }
   };
 }

@@ -3,8 +3,8 @@ import styles from './CreateJobCard.module.css';
 import Button from '../Button/Button';
 import { connect } from 'react-redux';
 import { LOCATION_STATUS } from '../../utils';
-import { setPickUpAddressInput, setDropOffAddressInput, setPickUpStatus, setDropOffStatus, setCreatingJob, setPickUpCoordinates, setDropOffCoordinates, removePickUpCoordinates, removeDropOffCoordinates } from '../../redux/action-creators';
-import { geocode } from '../../api/stuart';
+import { setPickUpAddressInput, setDropOffAddressInput, setPickUpStatus, setDropOffStatus, setCreatingJob, setPickUpCoordinates, setDropOffCoordinates, removePickUpCoordinates, removeDropOffCoordinates, setToastVisibility, resetInputs } from '../../redux/action-creators';
+import { geocode, createJob } from '../../api/stuart';
 
 class CreateJobCard extends React.Component {
   constructor(props) {
@@ -58,7 +58,20 @@ class CreateJobCard extends React.Component {
   }
 
   async createJob() {
-    // TODO: send api request, clear inputs and show toast
+    // handle error if both addresses are the same
+    if (this.props.pickUpAddressInput === this.props.dropOffAddressInput) {
+      this.props.setToastVisibility(true, 'You cannot enter the same address for pick up and drop off');
+      return;
+    }
+
+    try {
+      await createJob(this.props.pickUpAddressInput, this.props.dropOffAddressInput);
+      this.props.setToastVisibility(true, 'Job has been created successfully!');
+      this.props.resetInputs();
+    } catch (error) {
+      // handle error with toast message
+      this.props.setToastVisibility(true, 'Oops! There was an error creating your job. Please try again.');
+    }
   }
 
   render() {
@@ -127,5 +140,7 @@ export default connect(mapStateToProps, {
   setPickUpCoordinates,
   setDropOffCoordinates,
   removePickUpCoordinates,
-  removeDropOffCoordinates
+  removeDropOffCoordinates,
+  setToastVisibility,
+  resetInputs
 })(CreateJobCard);

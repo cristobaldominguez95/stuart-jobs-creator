@@ -30,16 +30,18 @@ class Map extends React.Component {
     }
 
     // same process for drop off coordinates
-    else if (prevProps.dropOffCoordinates !== this.props.dropOffCoordinates) {
+    if (prevProps.dropOffCoordinates !== this.props.dropOffCoordinates) {
       if (this.props.dropOffCoordinates) {
-        this.dropOffMarker = new window.google.maps.Marker({
-          position: {
-            lat: this.props.dropOffCoordinates.latitude,
-            lng: this.props.dropOffCoordinates.longitude
-          },
-          map: this.map,
-          icon: 'svg/dropOffMarker.svg'
-        });
+        if (!this.dropOffMarker) {
+          this.dropOffMarker = new window.google.maps.Marker({
+            position: {
+              lat: this.props.dropOffCoordinates.latitude,
+              lng: this.props.dropOffCoordinates.longitude
+            },
+            map: this.map,
+            icon: 'svg/dropOffMarker.svg'
+          });
+        }
       } else {
         this.dropOffMarker.setMap(null);
         this.dropOffMarker = undefined;
